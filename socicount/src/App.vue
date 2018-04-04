@@ -20,6 +20,7 @@ export default {
     background-color: black;
     box-sizing: border-box;
     overflow: hidden;
+    color: white;
 }
 
 </style>
