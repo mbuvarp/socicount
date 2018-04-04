@@ -18,5 +18,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  
+  .main {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8em;
+  }
 
 </style>
