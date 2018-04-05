@@ -26,7 +26,23 @@ export default new Vuex.Store({
 
         /* Goal should ba an object with keys 'count', 'title', 'description' */
         addGoal(state, goal) {
-            state.goals.push(goal)
+            const createId = () => {
+                let r = ''
+                for (let i = 0; i < 32; i++)
+                    r += String.fromCharCode(97 + Math.floor(Math.random() * Math.floor(26)))
+                return r
+            }
+            const g = {
+                id: createId(),
+                ...goal
+            }
+
+            state.goals.push(g)
+
+            // Update localStorage
+        },
+        removeGoalById(state, id) {
+            state.goals = state.goals.filter(g => g.id !== id)
         },
 
         toggleDialog(state, dialog) {

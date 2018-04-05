@@ -3,11 +3,11 @@
         <div class="fade"></div>
         <div class="body">
             <h2>Legg til milepæl</h2>
-            <input type="text" v-model="count" @keypress="isNumber" placeholder="Antall">
+            <input type="text" v-model="count" @keypress="isNumber" placeholder="Antall" id="count-input">
             <input type="text" v-model="title" maxlength="64" placeholder="Tittel">
             <textarea v-model="description" placeholder="Beskrivelse"></textarea>
-            <button type="button" class="close" @click="toggleDialog('goal')"></button>
             <button type="button" class="save" @click="saveGoal">Lagre</button>
+            <button type="button" class="close" @click="close"></button>
         </div>
     </div>
 </template>
@@ -23,6 +23,16 @@ export default {
             count: 0,
             title: '',
             description: ''
+        }
+    },
+
+    watch: {
+        showGoalDialog(show) {
+            if (show) {
+                setTimeout(() => {
+                    document.getElementById('count-input').select()
+                }, 50)
+            }
         }
     },
 
@@ -54,8 +64,15 @@ export default {
                     title: this.title,
                     description: this.description
                 })
-                this.toggleDialog('goal')
+                this.close()
             }
+        },
+        close() {
+            this.count = 0
+            this.title = ''
+            this.description = ''
+
+            this.toggleDialog('goal')
         },
 
         ...mapMutations([

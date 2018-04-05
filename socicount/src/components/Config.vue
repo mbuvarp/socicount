@@ -2,15 +2,20 @@
 
     <div class="config">
         <goal-dialog></goal-dialog>
+        <router-link :to="{ name: 'Main' }">
+            <div class="back"></div>
+        </router-link>
         <div class="category">
             <h2 class="head">Milepæler</h2>
             <div class="body goals">
                 <div class="goal headers">
+                    <div class="empty"></div>
                     <div class="count">Antall</div>
                     <div class="title">Tittel</div>
                     <div class="description">Beskrivelse</div>
                 </div>
-                <div class="goal" v-for="goal in sortedGoals" :key="goal.count">
+                <div class="goal" v-for="goal in sortedGoals" :key="goal.id">
+                    <div class="remove" @click="removeGoal(goal.id)"></div>
                     <div class="count" v-text="goal.count"></div>
                     <div class="title" v-text="goal.title"></div>
                     <div class="description" v-text="goal.description"></div>
@@ -44,8 +49,13 @@ export default {
     },
 
     methods: {
+        removeGoal(id) {
+            this.removeGoalById(id)
+        },
+
         ...mapMutations([
-            'toggleDialog'
+            'toggleDialog',
+            'removeGoalById'
         ])
     }
 }
@@ -57,6 +67,24 @@ export default {
     .config {
         padding: 3em 6em;
 
+        .back {
+            position: absolute;
+            top: 0.5em;
+            left: 0.5em;
+            color: white;
+
+            &:before {
+                content: '\f359';
+                font-family: 'FontAwesome';
+                font-size: 2em;
+            }
+            &:hover {
+                color: silver;
+            }
+            &:active {
+                color: #889;
+            }
+        }
         .category {
 
             .head {
@@ -69,38 +97,46 @@ export default {
 
                     .goal {
                         display: grid;
-                        grid-template-columns: 15% 25% 60%;
+                        grid-template-columns: 1.3em 15% 25% auto;
                         grid-template-rows: 1fr;
                         padding: 0.2em 0;
 
-                        .count { grid-column: 1; }
-                        .title { grid-column: 2; }
-                        .description { grid-column: 3; }
+                        .empty { grid-column: 1; }
+                        .remove {
+                            grid-column: 1;
+                            color: firebrick;
+
+                            &:before {
+                                content: '\f146';
+                                font-family: 'FontAwesome';
+                            }
+                            &:hover {
+                                color: red;
+                            }
+                        }
+                        .count { grid-column: 2; }
+                        .title { grid-column: 3; }
+                        .description { grid-column: 4; }
                         .add {
                             grid-column-start: 1;
-                            grid-column-end: 4;
-                            margin-top: 1em;
+                            grid-column-end: 5;
 
                             button {
                                 border: none;
                                 background-color: inherit;
                                 color: white;
-                                padding: 0.2em 0.5em 0.2em 0.2em;
-                                font-size: 1.2em;
+                                padding: 0;
+                                font-size: 1em;
                                 border-radius: 2px;
-                                vertical-align: bottom;
 
                                 &:before {
                                     content: '\f0fe';
                                     font-family: 'FontAwesome';
                                     color: forestgreen;
                                     padding-right: 0.4em;
-                                    vertical-align: middle;
-                                    font-size: 1.4em;
                                 }
                                 &:hover {
-                                    color: black;
-                                    background-color: #9a8f9e;
+                                    color: forestgreen;
                                 }
                             }
                         }
