@@ -50,5 +50,10 @@ module.exports = {
         'semi': 0,
         'indent': ['error', 4, { 'SwitchCase': 1 }],
         'linebreak-style': 0,
+        'comma-dangle': 0,
+        'no-plusplus': 0,
+        'max-len': 0,
+        'no-param-reassign': 0,
+        'curly': 0,
     }
 }

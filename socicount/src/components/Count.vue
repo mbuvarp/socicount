@@ -2,12 +2,13 @@
     <div class="count">
         <div class="content">
             <div class="header">Antall enheter solgt:</div>
-            <div class="number" v-text="count"></div>
+            <div class="number" v-text="productCount"></div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
     name: 'Count',
@@ -16,6 +17,11 @@ export default {
         return {
             count: 1000,
         }
+    },
+    computed: {
+        ...mapState([
+            'productCount',
+        ])
     }
 }
 

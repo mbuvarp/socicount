@@ -1,11 +1,26 @@
 <template>
-    <div class="goals"></div>
+    <div class="goals">
+        <ul class="goallist">
+            <li v-for="goal in sortedGoals" :key="goal.count">
+                <div v-text="goal.count"></div>
+                <h3 v-text="goal.title"></h3>
+                <p v-text="goal.description"></p>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'Goals',
+
+    computed: {
+        ...mapGetters([
+            'sortedGoals'
+        ])
+    }
 }
 
 </script>
