@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'GoalDialog',
@@ -35,9 +35,17 @@ export default {
 
 
     watch: {
-        showGoalDialog(show) {
+        showDialog(show) {
             if (show) {
                 setTimeout(() => {
+                    if (this.editGoalId !== null) {
+                        const goal = this.getGoalById(this.editGoalId)
+
+                        this.count = goal.count
+                        this.title = goal.title
+                        this.description = goal.description
+                    }
+
                     document.getElementById('count-input').select()
                 }, 50)
             }
@@ -46,8 +54,12 @@ export default {
 
     computed: {
         ...mapState({
+            editGoalId: state => state.editGoalId,
             showDialog: state => state.dialogs.goal
-        })
+        }),
+        ...mapGetters([
+            'getGoalById',
+        ])
     },
 
     methods: {
@@ -67,6 +79,9 @@ export default {
         },
         saveGoal() {
             if (this.validateGoal()) {
+                if (this.editGoalId !== null)
+                    this.removeGoalById(this.editGoalId)
+
                 this.addGoal({
                     count: parseInt(this.count, 10),
                     title: this.title,
@@ -79,13 +94,16 @@ export default {
             this.count = 0
             this.title = ''
             this.description = ''
+            this.setEditGoalId(null)
 
             this.toggleDialog('goal')
         },
 
         ...mapMutations([
             'addGoal',
-            'toggleDialog'
+            'removeGoalById',
+            'toggleDialog',
+            'setEditGoalId'
         ])
     }
 }

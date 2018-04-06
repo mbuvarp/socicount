@@ -20,6 +20,7 @@ export default new Vuex.Store({
         count: 0,
         goals: [],
         celebrations: [],
+        editGoalId: null,
 
         dialogs: {
             goal: false,
@@ -56,12 +57,14 @@ export default new Vuex.Store({
 
             saveToLS('goals', state.goals)
         },
+        setEditGoalId(state, id) {
+            state.editGoalId = id
+        },
         removeGoalById(state, id) {
             state.goals = state.goals.filter(g => g.id !== id)
 
             saveToLS('goals', state.goals)
         },
-
         queueCelebrations(state, goals) {
             state.celebrations = state.celebrations.concat(goals)
         },
@@ -93,5 +96,6 @@ export default new Vuex.Store({
             const compare = (a, b) => a.count - b.count
             return state.goals.sort(compare)
         },
+        getGoalById: (state) => (id) => state.goals.find(g => g.id === id),
     }
 })

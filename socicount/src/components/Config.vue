@@ -10,11 +10,13 @@
             <div class="body goals">
                 <div class="goal headers">
                     <div class="empty"></div>
+                    <div class="empty"></div>
                     <div class="count">Antall</div>
                     <div class="title">Tittel</div>
                     <div class="description">Beskrivelse</div>
                 </div>
                 <div class="goal" v-for="goal in sortedGoals" :key="goal.id">
+                    <div class="edit" @click="editGoal(goal.id)"></div>
                     <div class="remove" @click="removeGoal(goal.id)"></div>
                     <div class="count" v-text="goal.count"></div>
                     <div class="title" v-text="goal.title"></div>
@@ -49,13 +51,18 @@ export default {
     },
 
     methods: {
+        editGoal(id) {
+            this.setEditGoalId(id)
+            this.toggleDialog('goal')
+        },
         removeGoal(id) {
             this.removeGoalById(id)
         },
 
         ...mapMutations([
             'toggleDialog',
-            'removeGoalById'
+            'removeGoalById',
+            'setEditGoalId'
         ])
     }
 }
@@ -94,16 +101,30 @@ export default {
                 margin-top: 2em;
 
                 &.goals {
+                    margin-left: -2.4em;
 
                     .goal {
                         display: grid;
-                        grid-template-columns: 1.3em 15% 25% auto;
+                        grid-template-columns: 1.3em 1.3em 15% 25% auto;
                         grid-template-rows: 1fr;
                         padding: 0.2em 0;
 
                         .empty { grid-column: 1; }
-                        .remove {
+                        .edit {
                             grid-column: 1;
+                            color: navy;
+                            margin-top: -1px;
+
+                            &:before {
+                                content: '\f044';
+                                font-family: 'FontAwesome';
+                            }
+                            &:hover {
+                                color: blue;
+                            }
+                        }
+                        .remove {
+                            grid-column: 2;
                             color: firebrick;
 
                             &:before {
@@ -114,12 +135,12 @@ export default {
                                 color: red;
                             }
                         }
-                        .count { grid-column: 2; }
-                        .title { grid-column: 3; }
-                        .description { grid-column: 4; }
+                        .count { grid-column: 3; }
+                        .title { grid-column: 4; }
+                        .description { grid-column: 5; }
                         .add {
-                            grid-column-start: 1;
-                            grid-column-end: 5;
+                            grid-column-start: 2;
+                            grid-column-end: 6;
 
                             button {
                                 border: none;
