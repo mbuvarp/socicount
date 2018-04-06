@@ -35,7 +35,34 @@ export default {
     .goallist {
         list-style-type: none;
         padding: 0;
+        max-height: 100vh;
 
+        &:before {
+            content: '';
+            width: 100%;
+            height: 4em;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 90;
+            background-image: linear-gradient(
+                black,
+                transparent
+            );
+        }
+        &:after {
+            content: '';
+            width: 100%;
+            height: 8em;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: 90;
+            background-image: linear-gradient(
+                transparent,
+                black
+            );
+        }
         li {
             display: grid;
             grid-template-columns: 20% auto;

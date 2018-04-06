@@ -62,13 +62,14 @@ export default {
     grid-column: 2;
     grid-row: 2;
     position: relative;
+    height: 100vh;
     user-select: none;
 
     .content {
         position: absolute;
         width: 100%;
         left: 50%;
-        top: 50%;
+        top: 45%;
         transform: translate(-50%, -50%);
         text-align: center;
 
