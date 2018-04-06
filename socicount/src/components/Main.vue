@@ -27,6 +27,14 @@ export default {
         Count,
     },
 
+    mounted() {
+        // Keyboard bindings
+        document.addEventListener('keydown', this.keydown)
+    },
+    destroyed() {
+        document.removeEventListener('keydown', this.keydown)
+    },
+
     computed: {
         ...mapState([
             'celebrate',
@@ -48,6 +56,27 @@ export default {
     },
 
     methods: {
+        keydown(evt) {
+            const key = evt.key.toLowerCase()
+
+            switch (key) {
+                case 'arrowleft':
+                    this.$bus.$emit('decrease')
+                    break
+                case 'arrowright':
+                    this.$bus.$emit('increase')
+                    break
+                case 'escape':
+                    this.$bus.$emit('exit')
+                    break
+                case 'enter':
+                    this.$bus.$emit('confirm')
+                    break
+                default:
+                    break
+            }
+        },
+
         ...mapMutations([
             'toggleDialog'
         ])

@@ -17,6 +17,10 @@ export default {
         this.$bus.$on('increase', this.increase)
         this.$bus.$on('decrease', this.decrease)
     },
+    destroyed() {
+        this.$bus.$off('increase', this.increase)
+        this.$bus.$off('decrease', this.decrease)
+    },
 
     computed: {
         ...mapState({

@@ -26,6 +26,14 @@ export default {
         }
     },
 
+    mounted() {
+        this.$bus.$on('exit', this.close)
+    },
+    destroyed() {
+        this.$bus.$off('exit', this.close)
+    },
+
+
     watch: {
         showGoalDialog(show) {
             if (show) {
