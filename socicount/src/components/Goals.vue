@@ -62,7 +62,7 @@ export default {
 
     watch: {
         nextGoalIndex(nr) {
-            if (nr === null)
+            if (nr < 0)
                 return
 
             const increase = nr > this.curGoalIndex
