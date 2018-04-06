@@ -6,6 +6,13 @@
                     <li @click="showMenu = false">
                         <div class="close-menu">Lukk meny</div>
                     </li>
+                    <li @click="localMute = !localMute">
+                        <input type="checkbox" v-model="localMute" id="mute-cb" class="mute">
+                        <label for="mute-cb" class="mute">
+                            <span v-if="localMute">Lydløs</span>
+                            <span v-else>Ikke lydløs</span>
+                        </label>
+                    </li>
                     <li>
                         Sett antall manuelt
                         <div>
@@ -42,14 +49,16 @@ export default {
     data() {
         return {
             showMenu: false,
-            localCount: 0
+            localCount: 0,
+            localMute: false
         }
     },
 
     computed: {
-        ...mapState([
-            'count'
-        ])
+        ...mapState({
+            count: state => state.count,
+            mute: state => state.options.mute
+        })
     },
 
     methods: {
@@ -68,16 +77,24 @@ export default {
         },
 
         ...mapMutations([
-            'setCount'
+            'setCount',
+            'setOptionMute'
         ])
     },
 
     watch: {
         showMenu() {
             this.localCount = this.count
+            this.localMute = this.mute
         },
         count(c) {
             this.localCount = c
+        },
+        mute(m) {
+            this.localMute = m
+        },
+        localMute(m) {
+            this.setOptionMute(m)
         }
     }
 }
@@ -164,6 +181,25 @@ export default {
                 }
                 .set-count-confirm {
                     display: inline-block;
+                }
+                label.mute {
+
+                    &:before {
+                        content: '\f1f6';
+                        display: inline-block;
+                        font-family: 'FontAwesome';
+                        width: 1.5em;
+                        margin-left: -1.5em;
+                        color: forestgreen;
+                    }
+                }
+                input.mute {
+                    display: none;
+
+                    &:checked + label:before {
+                        content: '\f0f3';
+                        color: red;
+                    }
                 }
             }
         }

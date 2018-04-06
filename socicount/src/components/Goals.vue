@@ -70,7 +70,7 @@ export default {
     },
 
     watch: {
-        nextGoalIndex(nr) {
+        nextGoalIndex() {
             this.scrollToCurrentGoal()
         }
     }

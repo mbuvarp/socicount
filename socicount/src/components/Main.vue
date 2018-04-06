@@ -36,10 +36,11 @@ export default {
     },
 
     computed: {
-        ...mapState([
-            'celebrate',
-            'celebrations'
-        ])
+        ...mapState({
+            celebrate: state => state.celebrate,
+            celebrations: state => state.celebrations,
+            mute: state => state.options.mute
+        })
     },
 
     watch: {
@@ -48,8 +49,10 @@ export default {
                 return
 
             // Get hype
-            const hype = new Audio('../../static/sounds/airhorn.mp3')
-            hype.play()
+            if (!this.mute) {
+                const hype = new Audio('../../static/sounds/airhorn.mp3')
+                hype.play()
+            }
 
             this.toggleDialog('celebrate')
         }

@@ -25,6 +25,10 @@ export default new Vuex.Store({
         dialogs: {
             goal: false,
             celebrate: false
+        },
+
+        options: {
+            mute: false
         }
     },
 
@@ -93,6 +97,11 @@ export default new Vuex.Store({
         loadConfig(state) {
             state.count = loadFromLS('count') || 0
             state.goals = loadFromLS('goals') || []
+        },
+
+        // Options
+        setOptionMute(state, mute) {
+            state.options.mute = mute
         }
     },
 
