@@ -4,12 +4,22 @@ import Vuex from 'vuex'
 /* eslint no-unused-vars: 0 */
 const DEBUG = process.env.NODE_ENV !== 'production'
 
+function saveToLS(key, obj) {
+    const json = JSON.stringify(obj)
+    localStorage.setItem(key, json)
+}
+function loadFromLS(key) {
+    const json = localStorage.getItem(key)
+    return JSON.parse(json)
+}
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        productCount: 0,
+        count: 0,
         goals: [],
+        celebrations: [],
 
         dialogs: {
             goal: false,
@@ -18,10 +28,14 @@ export default new Vuex.Store({
 
     mutations: {
         increaseProductCount(state) {
-            ++state.productCount
+            ++state.count
+
+            saveToLS('count', state.count)
         },
         decreaseProductCount(state) {
-            --state.productCount
+            --state.count
+
+            saveToLS('count', state.count)
         },
 
         /* Goal should ba an object with keys 'count', 'title', 'description' */
@@ -39,10 +53,19 @@ export default new Vuex.Store({
 
             state.goals.push(g)
 
-            // Update localStorage
+            saveToLS('goals', state.goals)
         },
         removeGoalById(state, id) {
             state.goals = state.goals.filter(g => g.id !== id)
+
+            saveToLS('goals', state.goals)
+        },
+
+        queueCelebrations(state, goals) {
+            state.celebrations = state.celebrations.concat(goals)
+        },
+        removeCelebrationById(state, id) {
+            state.celebrations = state.celebrations.filter(c => c.id !== id)
         },
 
         toggleDialog(state, dialog) {
@@ -53,6 +76,11 @@ export default new Vuex.Store({
                 default:
                     break
             }
+        },
+
+        loadConfig(state) {
+            state.count = loadFromLS('count') || 0
+            state.goals = loadFromLS('goals') || []
         }
     },
 

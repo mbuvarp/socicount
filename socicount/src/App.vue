@@ -5,9 +5,20 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'App',
+
+    mounted() {
+        this.loadConfig()
+    },
+
+    methods: {
+        ...mapMutations([
+            'loadConfig'
+        ])
+    }
 }
 
 </script>

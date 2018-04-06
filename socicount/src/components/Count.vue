@@ -2,25 +2,44 @@
     <div class="count">
         <div class="content">
             <div class="header">Antall enheter solgt:</div>
-            <div class="number" v-text="productCount"></div>
+            <div class="number" v-text="count" @click="increase" @contextmenu="decrease"></div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
     name: 'Count',
 
-    data() {
-        return {
-            count: 1000,
-        }
-    },
     computed: {
         ...mapState([
-            'productCount',
+            'count',
+            'goals'
+        ])
+    },
+
+    methods: {
+        increase() {
+            this.increaseProductCount()
+            this.checkGoal()
+        },
+        decrease(evt) {
+            evt.preventDefault()
+            this.decreaseProductCount()
+        },
+
+        checkGoal() {
+            const goalsReached = this.goals.filter(g => g.count === this.count)
+            if (goalsReached.length > 0)
+                this.queueCelebrations(goalsReached)
+        },
+
+        ...mapMutations([
+            'increaseProductCount',
+            'decreaseProductCount',
+            'queueCelebrations'
         ])
     }
 }

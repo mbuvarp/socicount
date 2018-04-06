@@ -60,7 +60,7 @@ export default {
         saveGoal() {
             if (this.validateGoal()) {
                 this.addGoal({
-                    count: this.count,
+                    count: parseInt(this.count, 10),
                     title: this.title,
                     description: this.description
                 })
