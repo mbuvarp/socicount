@@ -1,7 +1,7 @@
 <template>
     <div class="goals">
-        <ul class="goallist">
-            <li v-for="goal in sortedGoals" :key="goal.count">
+        <ul id="goallist" class="goallist">
+            <li v-for="goal in sortedGoals" :key="goal.id" :id="goal.id" :class="{ 'reached': goalReached(goal.count) }">
                 <div><span v-text="goal.count"></span></div>
                 <h3 v-text="goal.title"></h3>
                 <p v-text="goal.description"></p>
@@ -11,15 +11,80 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
     name: 'Goals',
 
+    data() {
+        return {
+            curGoalIndex: 0,
+        }
+    },
+
+    mounted() {
+        this.scrollToCurrentGoal()
+    },
+
     computed: {
+        ...mapState([
+            'count'
+        ]),
         ...mapGetters([
-            'sortedGoals'
+            'sortedGoals',
+            'nextGoalId',
+            'nextGoalIndex',
+            'getGoalIdByIndex'
         ])
+    },
+
+    methods: {
+        scrollToCurrentGoal() {
+            const nextIndex = this.nextGoalIndex
+            if (nextIndex < 4)
+                return
+
+            const nextId = this.nextGoalId
+            const elmt = document.getElementById(nextId)
+            const list = document.getElementById('goallist')
+
+            const eTop = elmt.offsetTop
+            const cHeight = document.documentElement.clientHeight
+            const midHeight = (cHeight - elmt.offsetHeight) / 2
+            const scroll = midHeight - eTop
+
+            list.style.marginTop = `${scroll}px`
+        },
+        goalReached(goalcount) {
+            return this.count >= goalcount
+        }
+    },
+
+    watch: {
+        nextGoalIndex(nr) {
+            if (nr === null)
+                return
+
+            const increase = nr > this.curGoalIndex
+
+            const id = this.getGoalIdByIndex(nr - (increase ? 1 : 0))
+            const elmt = document.getElementById(id)
+            const h = elmt.offsetHeight
+
+            const list = document.getElementById('goallist')
+            let curTop = list.style.marginTop || '0px'
+            curTop = parseInt(/^(-?\d+(\.\d+)?)px$/.exec(curTop)[1], 10)
+
+            if (nr >= 4) {
+                if (increase)
+                    list.style.marginTop = `${curTop - h}px`
+                else
+                    list.style.marginTop = `${curTop + h}px`
+            } else if (!increase && curTop < 0) {
+                list.style.marginTop = '0px'
+            }
+            this.curGoalIndex = nr - 1
+        }
     }
 }
 
@@ -39,7 +104,7 @@ export default {
 
         &:before {
             content: '';
-            width: 100%;
+            width: 65%;
             height: 4em;
             position: absolute;
             left: 0;
@@ -52,7 +117,7 @@ export default {
         }
         &:after {
             content: '';
-            width: 100%;
+            width: 65%;
             height: 8em;
             position: absolute;
             left: 0;
@@ -69,9 +134,11 @@ export default {
             grid-template-rows: 2em 1fr;
 
             &:not(:first-child) {
-                margin-top: 0.5rem;
+                padding-top: 0.5rem;
             }
-
+            &.reached {
+                opacity: 0.2;
+            }
             div {
                 position: relative;
                 grid-column: 1;

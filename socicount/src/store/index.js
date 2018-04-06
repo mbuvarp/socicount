@@ -97,5 +97,22 @@ export default new Vuex.Store({
             return state.goals.sort(compare)
         },
         getGoalById: (state) => (id) => state.goals.find(g => g.id === id),
+        getGoalIdByIndex: (state, getters) => (index) => getters.sortedGoals[index].id,
+        nextGoalId(state, getters) {
+            const sorted = getters.sortedGoals
+
+            let index = 0
+            while (sorted[index].count <= state.count) {
+                index += 1
+                if (index > sorted.length - 1)
+                    return null
+            }
+
+            return sorted[index].id
+        },
+        nextGoalIndex(state, getters) {
+            const nextId = getters.nextGoalId
+            return getters.sortedGoals.findIndex(g => g.id === nextId)
+        }
     }
 })
