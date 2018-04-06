@@ -30,7 +30,7 @@ export default {
 
         .config {
             display: inline-block;
-            color: white;
+            color: #444;
 
             &:before {
                 content: '\f013';
@@ -38,10 +38,10 @@ export default {
                 font-size: 2.4em;
             }
             &:hover {
-                color: silver;
+                color: #888;
             }
             &:active {
-                color: #889;
+                color: silver;
             }
         }
     }

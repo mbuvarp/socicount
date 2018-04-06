@@ -8,12 +8,13 @@ import bus from './functions/bus'
 
 Vue.config.productionTip = false
 
+Vue.use(bus)
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
     store,
-    bus,
     components: { App },
     template: '<App/>',
 })

@@ -16,13 +16,16 @@ export default {
         // Keyboard bindings
         document.addEventListener('keydown', evt => {
             const key = evt.key.toLowerCase()
-            
+
             switch (key) {
                 case 'arrowleft':
                     this.$bus.$emit('decrease')
                     break
                 case 'arrowright':
                     this.$bus.$emit('increase')
+                    break
+                case 'escape':
+                    this.$bus.$emit('exit')
                     break
                 default:
                     break

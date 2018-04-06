@@ -13,11 +13,16 @@ import { mapState, mapMutations } from 'vuex'
 export default {
     name: 'Count',
 
+    mounted() {
+        this.$bus.$on('increase', this.increase)
+        this.$bus.$on('decrease', this.decrease)
+    },
+
     computed: {
-        ...mapState([
-            'count',
-            'goals'
-        ])
+        ...mapState({
+            count: state => state.count,
+            goals: state => state.goals,
+        })
     },
 
     methods: {
@@ -26,7 +31,8 @@ export default {
             this.checkGoal()
         },
         decrease(evt) {
-            evt.preventDefault()
+            if (evt)
+                evt.preventDefault()
             this.decreaseProductCount()
         },
 
