@@ -1,7 +1,7 @@
 <template>
 
     <div class="main">
-        <celebration v-if="celebrate" ></celebration>
+        <celebration></celebration>
         <top-bar></top-bar>
         <goals></goals>
         <count></count>
@@ -27,14 +27,9 @@ export default {
         Count,
     },
 
-    data() {
-        return {
-            celebrate: false
-        }
-    },
-
     computed: {
         ...mapState([
+            'celebrate',
             'celebrations'
         ])
     },
@@ -48,9 +43,15 @@ export default {
             const hype = new Audio('../../static/sounds/airhorn.mp3')
             hype.play()
 
-            this.celebrate = true
+            this.toggleDialog('celebrate')
         }
     },
+
+    methods: {
+        ...mapMutations([
+            'toggleDialog'
+        ])
+    }
 
 }
 

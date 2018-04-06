@@ -12,6 +12,22 @@ export default {
 
     mounted() {
         this.loadConfig()
+
+        // Keyboard bindings
+        document.addEventListener('keydown', evt => {
+            const key = evt.key.toLowerCase()
+            
+            switch (key) {
+                case 'arrowleft':
+                    this.$bus.$emit('decrease')
+                    break
+                case 'arrowright':
+                    this.$bus.$emit('increase')
+                    break
+                default:
+                    break
+            }
+        })
     },
 
     methods: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="dialog goal-dialog" v-if="showGoalDialog">
+    <div class="dialog goal-dialog" v-if="showDialog">
         <div class="fade"></div>
         <div class="body">
             <h2>Legg til milepæl</h2>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
     name: 'GoalDialog',
@@ -37,9 +37,9 @@ export default {
     },
 
     computed: {
-        ...mapGetters([
-            'showGoalDialog'
-        ])
+        ...mapState({
+            showDialog: state => state.dialogs.goal
+        })
     },
 
     methods: {

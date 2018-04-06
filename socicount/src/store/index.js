@@ -23,6 +23,7 @@ export default new Vuex.Store({
 
         dialogs: {
             goal: false,
+            celebrate: false
         }
     },
 
@@ -73,6 +74,9 @@ export default new Vuex.Store({
                 case 'goal':
                     state.dialogs.goal = !state.dialogs.goal
                     break
+                case 'celebrate':
+                    state.dialogs.celebrate = !state.dialogs.celebrate
+                    break
                 default:
                     break
             }
@@ -89,9 +93,5 @@ export default new Vuex.Store({
             const compare = (a, b) => a.count - b.count
             return state.goals.sort(compare)
         },
-
-        showGoalDialog(state) {
-            return state.dialogs.goal
-        }
     }
 })
