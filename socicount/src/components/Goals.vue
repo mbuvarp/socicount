@@ -24,6 +24,13 @@ export default {
 
     mounted() {
         this.scrollToCurrentGoal()
+
+        this.$bus.$on('manualCount', () => {
+            this.scrollToCurrentGoal()
+        })
+    },
+    destroyed() {
+        this.$bus.$off('manualCount')
     },
 
     computed: {
@@ -40,13 +47,15 @@ export default {
 
     methods: {
         scrollToCurrentGoal() {
+            const list = document.getElementById('goallist')
+            list.style.marginTop = '0px'
+
             const nextIndex = this.nextGoalIndex
             if (nextIndex < 4)
                 return
 
             const nextId = this.nextGoalId
             const elmt = document.getElementById(nextId)
-            const list = document.getElementById('goallist')
 
             const eTop = elmt.offsetTop
             const cHeight = document.documentElement.clientHeight
@@ -62,28 +71,7 @@ export default {
 
     watch: {
         nextGoalIndex(nr) {
-            if (nr < 0)
-                return
-
-            const increase = nr > this.curGoalIndex
-
-            const id = this.getGoalIdByIndex(nr - (increase ? 1 : 0))
-            const elmt = document.getElementById(id)
-            const h = elmt.offsetHeight
-
-            const list = document.getElementById('goallist')
-            let curTop = list.style.marginTop || '0px'
-            curTop = parseInt(/^(-?\d+(\.\d+)?)px$/.exec(curTop)[1], 10)
-
-            if (nr >= 4) {
-                if (increase)
-                    list.style.marginTop = `${curTop - h}px`
-                else
-                    list.style.marginTop = `${curTop + h}px`
-            } else if (!increase && curTop < 0) {
-                list.style.marginTop = '0px'
-            }
-            this.curGoalIndex = nr - 1
+            this.scrollToCurrentGoal()
         }
     }
 }

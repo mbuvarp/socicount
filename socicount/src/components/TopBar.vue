@@ -8,6 +8,16 @@
                     </li>
                     <li>
                         Sett antall manuelt
+                        <div>
+                            <div class="set-count">
+                                <input type="text" @keypress="isNumber" v-model="localCount">
+                            </div>
+                            <div class="set-count-confirm">
+                                <button type="button" class="save" @click="confirmCount">
+                                    OK
+                                </button>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <router-link :to="{ name: 'Config' }">
@@ -24,6 +34,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 
 export default {
     name: 'TopBar',
@@ -31,6 +42,42 @@ export default {
     data() {
         return {
             showMenu: false,
+            localCount: 0
+        }
+    },
+
+    computed: {
+        ...mapState([
+            'count'
+        ])
+    },
+
+    methods: {
+        isNumber(evt) {
+            evt = evt || window.event
+            const charCode = (evt.which) ? evt.which : evt.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                evt.preventDefault()
+            return true
+        },
+
+        confirmCount() {
+            this.setCount(this.localCount)
+
+            this.$bus.$emit('manualCount')
+        },
+
+        ...mapMutations([
+            'setCount'
+        ])
+    },
+
+    watch: {
+        showMenu() {
+            this.localCount = this.count
+        },
+        count(c) {
+            this.localCount = c
         }
     }
 }
@@ -45,6 +92,19 @@ export default {
     grid-row: 1;
     padding: 0.3em;
 
+    button.save {
+        width: 4em;
+        border: none;
+        border-radius: 2px;
+        padding: 0.4em;
+        margin-top: 0.3em;
+        background-color: forestgreen;
+        color: white;
+
+        &:hover {
+            background-color: limegreen;
+        }
+    }
     .menu {
         position: absolute;
         top: 0;
@@ -93,6 +153,17 @@ export default {
                 .close-menu {
                     width: 100%;
                     text-align: center;
+                }
+                .set-count {
+                    padding: 0.3em 0;
+                    display: inline-block;
+
+                    input {
+                        width: 7em;
+                    }
+                }
+                .set-count-confirm {
+                    display: inline-block;
                 }
             }
         }

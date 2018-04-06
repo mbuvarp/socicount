@@ -39,6 +39,11 @@ export default new Vuex.Store({
 
             saveToLS('count', state.count)
         },
+        setCount(state, count) {
+            state.count = count
+
+            saveToLS('count', state.count)
+        },
 
         /* Goal should ba an object with keys 'count', 'title', 'description' */
         addGoal(state, goal) {
