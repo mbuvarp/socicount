@@ -1,0 +1,19 @@
+{
+  "name": "SocicountServer",
+  "version": "0.0.1",
+  "description": "Server for Socicount",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "server",
+    "socicount",
+    "ksg"
+  ],
+  "author": "Magnus Buvarp",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
